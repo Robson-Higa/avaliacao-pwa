@@ -1,6 +1,6 @@
 {
   "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "Marvelverso",
   "icons": [
     {
       "src": "favicon.ico",
@@ -12,7 +12,7 @@
       "type": "image/png",
       "sizes": "128x128"
     },
-     {
+    {
       "src": "logo256.png",
       "type": "image/png",
       "sizes": "256x256"
@@ -25,6 +25,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#162b22",
+  "background_color": "#162b22"
 }

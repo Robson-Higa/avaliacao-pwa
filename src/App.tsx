@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { characters, Character } from './data/characters';
 
+import styles from './App.module.css'
+
 interface CharacterWithImageUrl extends Character {
   imageUrl: string;
 }
@@ -30,9 +32,9 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <h1>Heróis da Marvel</h1>
-      <div className="character-card">
+    <div className={styles.container}>
+      <h1 className={styles.title}>Heróis da Marvel</h1>
+      
         <img
           src={character.imageUrl}
           alt={character.name}
@@ -40,7 +42,7 @@ const App = () => {
         />
         <h2>{character.name}</h2>
         <p>{character.description}</p>
-      </div>
+    
     </div>
   );
 };
