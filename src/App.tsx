@@ -1,57 +1,46 @@
 import { useEffect, useState } from 'react';
-import data from './data/characters.json';
+import { characters, Character } from './data/characters';
 
-interface Character {
-  name: string;
-  description: string;
-  image: string;  
-  imageUrl?: string;  
-}
-
-interface CharacterData {
-  characters: Character[];
+interface CharacterWithImageUrl extends Character {
+  imageUrl: string;
 }
 
 const App = () => {
-  const [character, setCharacter] = useState<Character | null>(null);
+  const [character, setCharacter] = useState<CharacterWithImageUrl | null>(null);
 
-  const getImageUrl = (image: string) => {
- 
-
-    try {
-      return require(`./assets/img/${image}`).default;  
-    } catch (e) {
-      console.error('Erro ao carregar a imagem:', e);
-      return '';  
-    }
+  const getImageUrl = async (image: string): Promise<string> => {
+      const imageModule = await import(`../src/assets/img/${image}`);
+      return imageModule.default;
   };
 
   useEffect(() => {
-    const { characters } = data as CharacterData;
+    const fetchCharacter = async () => {
+      const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
 
-    const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+      const imageUrl = await getImageUrl(randomCharacter.image);
 
-    if (!randomCharacter.image) {
-      console.error('Imagem não encontrada para o personagem', randomCharacter.name);
-    }
+     setCharacter({ ...randomCharacter, imageUrl });
+    };
 
-    const imageUrl = getImageUrl(randomCharacter.image);
-
-    setCharacter({ ...randomCharacter, imageUrl });
+    fetchCharacter();
   }, []);
+
+  if (!character) {
+    return <p>Erro</p>;
+  }
 
   return (
     <div className="App">
       <h1>Heróis da Marvel</h1>
-      {character ? (
-        <div className="character-card">
-          <img src={character.image} alt={character.name} className="character-image" />
-          <h2>{character.name}</h2>
-          <p>{character.description}</p>
-        </div>
-      ) : (
-        <p>Carregando...</p>
-      )}
+      <div className="character-card">
+        <img
+          src={character.imageUrl}
+          alt={character.name}
+          className="character-image"
+        />
+        <h2>{character.name}</h2>
+        <p>{character.description}</p>
+      </div>
     </div>
   );
 };
